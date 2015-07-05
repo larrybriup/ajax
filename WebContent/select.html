@@ -1,0 +1,51 @@
+<html>
+	<head>
+		<title>select</title>
+		<script type="text/javascript" src="ajax_js/myAjax.js"></script>
+		<script language="javascript">
+		var xmlHttpRequest=null;	
+		function change(v){
+				if(v==-1){
+					return;
+				}
+				if(xmlHttpRequest==null){
+					xmlHttpRequest=createXMLHttpRequest();
+				}
+				xmlHttpRequest.open("get","SelectServlet?v="+v,true);
+				xmlHttpRequest.onreadystatechange=ajaxCallBack;
+				xmlHttpRequest.send(null);
+			}
+		function ajaxCallBack(){
+			if(xmlHttpRequest.readyState=4&&xmlHttpRequest.status==200){
+				var dom=xmlHttpRequest.responseXML;
+				var ops=dom.getElementsByTagName("option");
+				var mySelect=document.getElementById("mySelect");
+				
+				mySelect.options.length=1;
+				for(var i=0;i<ops.length;i++){
+					var city=ops[i].firstChild.nodeValue;
+					mySelect.options[i+1]=new Option(city,i);
+				}
+			}
+		}
+		</script>
+	</head>
+	<body>
+		<select onchange="change(this.value)">
+			<option value=-1>省份</option>
+			<option value=0>湖南省</option>
+			<option value=1>湖北省</option>
+			<option value=2>河南省</option>
+		</select>
+		<select id="mySelect" onchange="change2(this.value)">
+			<option value=-1>城市</option>
+		</select>
+	</body>
+</html>
+
+
+
+
+
+
+

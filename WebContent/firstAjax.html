@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>firstAjax</title>
+<script type="text/javascript" src="ajax_js/myAjax.js"></script>
+<script type="text/javascript">
+	var xmlHttpRequest=null;
+	function ajaxSubmit(){
+		var username=document.getElementById("username").value;
+		if(username==""){
+			alert("请求输入用户名!");
+			return;
+		}
+		//获得XMLHttpRequest对象
+		if(xmlHttpRequest==null){
+		xmlHttpRequest=createXMLHttpRequest();
+		}
+		//open里有三个参数,准备好要发送的请求,一般都是异步的.
+		//1,请求方式get或者post一般为get
+		//2,请求的servlet的url
+		//3,这次请求是否为异步请求,true为异步,false为同步.
+		xmlHttpRequest.open("get","AjaxFirstServlet?username="+username,true);
+		//注册回调函数
+		//注册回调函数的作用:
+		/**
+			1,注册这个回调函数的名字是随便起的.
+			2,不要在函数后面加(),不是调用函数,而是注册,与事件绑定
+			3,这句代码的含义是:当onreadystatechange的状态值改变的时候,js会自动的调用ajaxCallBack函数,
+				每次状态改变都会调用.
+			4,onreadystatechange所表示的状态有哪些:
+				0 1 2 3 4 分别代表不同的状态.
+				0:代表这个请求还没有初始化,这个状态很难见到.
+				1:代表已经初始化完毕.
+				2:代表请求已经发送出去到服务器端.
+				3:代表服务器已经把数据返回给客户端,但是客户端还没有接受或者还没有接受完毕.
+				4:代表客户端已经接受完毕,可以开始解析了.
+		*/
+		xmlHttpRequest.onreadystatechange=ajaxCallBack;
+		//发送这个异步请求
+		/*
+		如果异步请求是以get的方式发送给服务器的.那么参数可以不写或者写个null,这个时候如果有参数要传给服务器,
+		参数要写到url后面,如果是以post方式发送的,并且需要给服务器传参数,那么这个参数是要写到这个send方法的
+		参数的里面的.例如:xmlHttpRequest.send("name=tom&&age=20");
+		*/
+		xmlHttpRequest.send(null);
+	}
+	//定义上面所使用到的回调函数
+	/*
+	回调函数也是js中的一个普通的函数,只不过有一个特殊的作用(onreadystatechange改变的时候自动调用这个函数),
+	由于这个特殊的作用,随所以我们叫他回调函数.
+	回调函数的名字是随便起的.
+	回调函数的作用:
+		1,接受并解析服务器传过来的数据
+		2,进行动态的局部刷新,把拿到的数据动态的显示到页面里面
+	*/
+	function ajaxCallBack(){
+		/**
+		onreadystate改变的时候会调用这个函数,但是调用的时候会不会执行里面的代码是我们可以控制的,
+		加if条件判断,
+		由于回调函数的作用,我们并不需要在每次状态改变的时候都调用回调函数,只有是4的时候才有可能去执行
+		由于只要我们向服务器发送一个请求,无论如何服务器都会给我们一个响应,所以只有当响应的状态码是200
+		的时候才会真的调用回调函数.例如:返回的状态码是500,404等的时候是不需要调用的.
+		*/
+		//如果接受到了数据
+		if(xmlHttpRequest.readyState==4){
+			//如果这个数据是正确的
+			//http状态码为200时数据是正确的
+			if(xmlHttpRequest.status==200){
+				//这里是回调函数真正要执行的代码
+				//接受服务器传过来的数据,如果是以xml的形式传过来的那么就需要解析了
+				//如果是文本值就直接接受
+				var msg=xmlHttpRequest.responseText;
+				//进行局部刷新,把数据动态的放到页面的某个地方
+				document.getElementById("myDiv").innerHTML=msg;
+			}
+		}
+	}
+</script>
+</head>
+<body>
+	<input type="text" name="username"  id="username"/>
+	<input type="button" value="提交" onclick="ajaxSubmit()"/>
+	<div id="myDiv"></div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<html>
+	<head>
+		<title>queryAll</title>
+		<script type="text/javascript" src="ajax_js/myAjax.js"></script>
+		<script language="javascript">
+			var xmlHttpRequest=null;
+		function checkWord(v){
+				if(v.trim()==""){
+					var myDiv=document.getElementById("myDiv");
+					myDiv.style.display="none";
+					alert("有空格");
+					return;
+				}
+				if(xmlHttpRequest==null){
+					xmlHttpRequest=createXMLHttpRequest();
+				}
+				xmlHttpRequest.open("get","baiduServlet?v="+v,true);
+				xmlHttpRequest.onreadystatechange=ajaxCallBack;
+				xmlHttpRequest.send(null);
+			}
+		function ajaxCallBack(){
+			if(xmlHttpRequest.readyState==4&&xmlHttpRequest.status==200){
+				var dom=xmlHttpRequest.responseXML;
+				var msgs=dom.getElementsByTagName("msg");
+				var myDiv=document.getElementById("myDiv");
+				myDiv.style.display="table-cell";
+				myDiv.innerHTML="";
+				for(var i=0;i<msgs.length;i++){
+					var msg=msgs[i].firstChild.nodeValue;
+					myDiv.innerHTML+=
+						"<div onmouseover='changeColor1(this)' onmouseout='changeColor2(this)' onclick='autoWord(this.innerHTML)'>"+msg+"</div>";
+				}
+				
+			}
+		}
+		function changeColor1(div){
+			div.style.background="lightgray";
+		}
+		function changeColor2(div){
+			div.style.background="white";
+		}
+		function autoWord(v){
+			word.value=v;
+			var myDiv=document.getElementById("myDiv");
+			myDiv.style.display="none";
+		}
+		</script>
+		<style type="text/css">
+			#myDiv{
+				border-top:1px outset;
+				border-bottom:1px outset;
+				border-left:1px outset;
+				border-right:1px outset;
+				width:230px;
+				display:none;
+				cursor:pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<input type="text" id="word" name="word" onkeyup="checkWord(this.value)"/>
+		<input type="button" value="百度两下"/><br>
+		<div id="myDiv"></div>
+	</body>
+</html>
+
+
+
+
+
+
+

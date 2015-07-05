@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<title>query</title>
+		<script type="text/javascript" src="ajax_js/myAjax.js"></script>
+		<script language="javascript">
+			var xmlHttpRequest=null;
+		function getStudent(){
+				var id=document.getElementById("id").value;
+				if(id==""){
+					alert("请输入学生编号!");
+					return;
+				}
+				if(xmlHttpRequest==null){
+					xmlHttpRequest=createXMLHttpRequest();
+				}
+				xmlHttpRequest.open("get","queryServlet?id="+id,true);
+				xmlHttpRequest.onreadystatechange=ajaxCallBack;
+				xmlHttpRequest.send(null);
+				
+			}
+			function ajaxCallBack(){
+			if(xmlHttpRequest.readyState==4&&xmlHttpRequest.status==200){
+				//接受服务器传过来的xml文档并解析
+				var dom=xmlHttpRequest.responseXML;
+				//students是一个集合,集合中装的是<student>标签元素
+				var students=dom.getElementsByTagName("student");
+				
+				//childNodes 拿到子标签的名字们
+				//nodeName 拿到标签的名字
+				//firstChild 拿到第一个子结点
+				//nodeValue 拿到文本结点的值
+				
+				
+				//students[0] 拿到元素中唯一的标签对象
+				var nodeList=students[0].childNodes;//拿到子结点的集合
+				document.getElementById("myDiv").innerHTML="";
+				for(var i=0;i<nodeList.length;i++){
+					//alert(nodeList[i].firstChild.nodeValue);
+					document.getElementById("myDiv").innerHTML+=nodeList[i].firstChild.nodeValue+" ";
+				}
+				
+				//局部刷新
+				
+				}
+			}
+		</script>
+	</head>
+	<body>
+		学生编号:<input type="text" name="id" id="id"/>
+		<input type="button" value="查询" onclick="getStudent()"/><br>
+		<div id="myDiv"></div>
+	</body>
+</html>
+
+
+
+
+
+
+

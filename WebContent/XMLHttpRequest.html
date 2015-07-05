@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<title>XMLHttpRequest</title>
+		<script language="javascript">
+			//XMLHttpRequest
+			//alert(window.ActiveXObject);
+				//alert(window.XMLHttpRequest);
+			//判断是否是IE浏览器
+			var xmlHttpRequest=null;
+			if(window.ActiveXObject){
+				xmlHttpRequest=new XMLHttpRequest("microsoft.XMLHTTP");
+				//new ActiveXObject();
+				//new ActiveXObject("XMLHTTP");
+			}
+			//判断是个否是FF,chromium浏览器
+			//判断出除了IE之外还支持这对象的浏览器
+			else if(window.XMLHttpRequest){
+				xmlHttpRequest=new XMLHttpRequest();
+			}else{
+				alert("您的浏览器不支持ajax");
+			}
+			alert("xmlHttpRequest="+xmlHttpRequest);
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
+
+
+
+
+
+
+

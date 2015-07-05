@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<title>queryAll</title>
+		<script type="text/javascript" src="ajax_js/myAjax.js"></script>
+		<script language="javascript">
+		var xmlHttpRequest=null;
+		function getStudents(){
+				if(xmlHttpRequest==null){
+					xmlHttpRequest=createXMLHttpRequest();
+				}
+				xmlHttpRequest.open("get","queryServlets?",true);
+				xmlHttpRequest.onreadystatechange=ajaxCallBack;
+				xmlHttpRequest.send(null);
+				
+			}
+			function ajaxCallBack(){
+			if(xmlHttpRequest.readyState==4&&xmlHttpRequest.status==200){
+				var dom=xmlHttpRequest.responseXML;
+				var students=dom.getElementsByTagName("student");
+				var myDiv=document.getElementById("myDiv");
+				/***
+				for(var i=0;i<students.length;i++){
+					var nodeList=students[i].childNodes;
+					for(var j=0;j<nodeList.length;j++){
+						myDiv.innerHTML+=nodeList[j].firstChild.nodeValue+" ";
+					}
+					myDiv.innerHTML+="<br>";
+				}
+				
+				*/
+					var atts=students[0].attributes;
+					for(var j=0;j<atts.length;j++){
+						var attName=atts[j].name;
+						myDiv.innerHTML+=attName+" ";
+					}
+					myDiv.innerHTML+="<br>";
+				for(var i=0;i<students.length;i++){
+					var atts=students[i].attributes;
+					for(var j=0;j<atts.length;j++){
+						var attValue=atts[j].value;
+						myDiv.innerHTML+=attValue+" ";
+					}
+					myDiv.innerHTML+="<br>";
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<input type="button" value="查询所有" onclick="getStudents()"/><br>
+		<div id="myDiv"></div>
+	</body>
+</html>
+
+
+
+
+
+
+

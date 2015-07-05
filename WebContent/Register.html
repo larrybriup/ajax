@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<title>XMLHttpRequest</title>
+		<script type="text/javascript" src="ajax_js/myAjax.js"></script>
+		<script language="javascript">
+		var xmlHttpRequest=null;
+		function checkNameGet(){
+			var username=document.getElementById("username").value;
+			if(username==""){
+				alert("请输入用户名!");
+				return;
+			}
+			if(xmlHttpRequest==null){
+				xmlHttpRequest=createXMLHttpRequest();
+			}
+			xmlHttpRequest.open("get","AjaxRegisterServlet?username="+username,true);
+			xmlHttpRequest.onreadystatechange=ajaxCallBack;
+			xmlHttpRequest.send(null);
+		}
+		function checkNamePost(){
+			var username=document.getElementById("username").value;
+			if(username==""){
+				alert("请输入用户名!");
+				return;
+			}
+			if(xmlHttpRequest==null){
+				xmlHttpRequest=createXMLHttpRequest();
+			}
+			xmlHttpRequest.open("post","AjaxRegisterServlet",true);
+			xmlHttpRequest.onreadystatechange=ajaxCallBack;
+			//post需要设置头部类型
+			xmlHttpRequest.setRequestHeader("content-type","application/x-www-form-urlencoded");
+			xmlHttpRequest.send("username="+username);
+		}
+		function ajaxCallBack(){
+			var color="green";
+			if(xmlHttpRequest.readyState==4&&xmlHttpRequest.status==200){
+				var msg=xmlHttpRequest.responseText;
+				if(msg.length==10){
+					color="red";
+				document.getElementById("myspan").innerHTML="<font color='"+color+"'>"+msg+"</font>";
+				}else{
+				document.getElementById("myspan").innerHTML="<font color='"+color+"'>"+msg+"</font>";
+				}
+			}
+		}
+		</script>
+	</head>
+	<body>
+	用户名:<input type="text" name="username" id="username" onblur="checkNamePost()"/><span id="myspan"></span><br>
+	密码:<input type="password" name="password" id="password"/><br>
+	</body>
+</html>
+
+
+
+
+
+
+
