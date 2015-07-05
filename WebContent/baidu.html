@@ -3,7 +3,7 @@
 		<title>queryAll</title>
 		<script type="text/javascript" src="ajax_js/myAjax.js"></script>
 		<script language="javascript">
-			var xmlHttpRequest=null;
+			var xmlHttpRequest;
 		function checkWord(v){
 				if(v.trim()==""){
 					var myDiv=document.getElementById("myDiv");
@@ -11,7 +11,7 @@
 					alert("有空格");
 					return;
 				}
-				if(xmlHttpRequest==null){
+				if(!xmlHttpRequest){
 					xmlHttpRequest=createXMLHttpRequest();
 				}
 				xmlHttpRequest.open("get","baiduServlet?v="+v,true);
