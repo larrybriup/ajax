@@ -1,0 +1,20 @@
+//元素节点的名字
+messages[i].nodeName;
+					
+//元素节点下面第一个节点的值(这个节点必须是文本节点)
+messages[i].firstChild.nodeValue;
+					
+//元素属性中一个属性名为name的属性值
+messages[i].getAttribute("name");
+					
+//元素的属性集合 返回的集合里面放的是Attr类型的对象
+messages[i].attributes;
+					
+//获得集合中某一个Attr对象 有name和value俩个属性 可以查看属性名和值
+messages[i].attributes[i];
+					
+//获得元素下面所有的直接子节点
+messages[i].childNodes;
+				
+//元素节点中的最后一个子节点
+messages[i].lastChild
